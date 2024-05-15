@@ -89,6 +89,7 @@
                       <option value="waiting">Menunggu</option>
                       <option value="rejected">Ditolak</option>
                       <option value="approved">Disetujui</option>
+                      <option value="done">Selesai Dibayar</option>
                     </select>
                   </div>
 
@@ -106,6 +107,7 @@
                 <div class="badge rounded-pill me-1 bg-label-warning">Menunggu</div>
                 <div class="badge rounded-pill me-1 bg-label-danger">Ditolak</div>
                 <div class="badge rounded-pill me-1 bg-label-success">Disetujui</div>
+                <div class="badge rounded-pill me-1 bg-label-info">Selesai Dibayar</div>
               </div>
             </div>
 
@@ -289,8 +291,13 @@
           }
 
           if (data["status_color"] == "approved") {
-            $(row).css("background-color", "#e8fadf");
+            $(row).css("background-color", "#d2f3c2");
             $(row).addClass("success");
+          }
+
+          if (data["status_color"] == "done") {
+            $(row).css("background-color", "#d7f5fc");
+            $(row).addClass("info");
           }
         },
         initComplete: function(settings) {
@@ -365,6 +372,58 @@
         getStartDatetimeCreated()
         getEndDatetimeCreated()
         getStatus()
+      });
+
+      // payment confirmation
+      $('#table-daftar-reimbursement').on('click', '.btn-payment-confirmation', function() {
+        var kode = $(this).data('id');
+        var nama = $(this).data('nama');
+        swal({
+            title: "Apakah anda yakin?",
+            text: "Untuk mengkonfirmasi pembayaran : " + nama,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willConfirm) => {
+            if (willConfirm) {
+              $.ajax({
+                type: 'ajax',
+                method: 'get',
+                url: '/reimbursement/payment-confirmation/' + kode,
+                async: true,
+                dataType: 'json',
+                success: function(response) {
+                  if (response.status == true) {
+                    var span = document.createElement("span");
+                    span.innerHTML = "" + response.pesan + "";
+
+                    swal({
+                        html: true,
+                        title: "Success!",
+                        content: span,
+                        icon: "success"
+                      })
+                      .then(function() {
+                        location.reload(true);
+                      });
+                  } else {
+                    swal("Hapus Data Gagal!", {
+                      icon: "warning",
+                      title: "Failed!",
+                      text: response.pesan,
+                    });
+                  }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  var err = eval("(" + jqXHR.responseText + ")");
+                  swal("Error!", err.Message, "error");
+                }
+              });
+            } else {
+              swal("Cancelled", "Konfirmasi Pembayaran Data Dibatalkan.", "error");
+            }
+          });
       });
 
       //delete

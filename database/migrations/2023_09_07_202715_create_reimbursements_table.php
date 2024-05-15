@@ -18,7 +18,7 @@ return new class extends Migration
       $table->string('name');
       $table->text('description')->nullable();
       $table->text('file')->nullable();
-      $table->enum('status', ['waiting', 'rejected', 'approved']);
+      $table->string('status', 100);
       $table->uuid('user_approved')->nullable();
       $table->date('date_approved')->nullable();
       $table->timestamps();
@@ -35,8 +35,8 @@ return new class extends Migration
   public function down(): void
   {
     Schema::table('reimbursements', function (Blueprint $table) {
-        $table->dropForeign(['user_created']);
-        $table->dropForeign(['user_approved']);
+      $table->dropForeign(['user_created']);
+      $table->dropForeign(['user_approved']);
     });
 
     Schema::dropIfExists('reimbursements');

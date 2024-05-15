@@ -40,7 +40,7 @@ class UserMenuPermissionSeeder extends Seeder
       'link' => 'reimbursement',
       'description' => '-',
       'icon' => 'fas fa-money-check-alt',
-      'permission' => 'create,read,update,delete,list,approval',
+      'permission' => 'create,read,update,delete,list,approval,payment-confirmation',
       'position' => 2,
     ]);
 
@@ -124,7 +124,7 @@ class UserMenuPermissionSeeder extends Seeder
     UserMenuAuthorization::create([
       'role_id' => $role_superadmin->id,
       'menu_id' => $menu_parent_reimbursement->id,
-      'permission_given' => 'create,read,update,delete,list,approval',
+      'permission_given' => 'create,read,update,delete,list,approval,payment-confirmation',
       'status' => true
     ]);
 
@@ -196,7 +196,7 @@ class UserMenuPermissionSeeder extends Seeder
     UserMenuAuthorization::create([
       'role_id' => $role_finance->id,
       'menu_id' => $menu_parent_reimbursement->id,
-      'permission_given' => 'create,read,update,delete,list,approval',
+      'permission_given' => 'create,read,update,delete,list,approval,payment-confirmation',
       'status' => true
     ]);
 

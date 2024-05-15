@@ -87,9 +87,16 @@ class ReimbursementController extends Controller
 
           if (isAccess('approval', $id_menu, auth()->user()->role_id)) {
             if ($data->status == 'waiting') {
-              if (Auth::user()->id != $data->user_created) {
-                $btn_checking_application = '<a class="dropdown-item" href="' . route('reimbursement.checking', $data->id) . '"><i class="fas fa-user-check me-1"></i> Cek Pengajuan</a>';
-              }
+              $btn_checking_application = '<a class="dropdown-item" href="' . route('reimbursement.checking', $data->id) . '"><i class="fas fa-user-check me-1"></i> Cek Pengajuan</a>';
+            }
+          }
+
+          // penyelesaian oleh fianance yaitu pembayaran
+          $btn_payment_confirmation = '';
+
+          if (isAccess('payment-confirmation', $id_menu, auth()->user()->role_id)) {
+            if ($data->status == 'approved') {
+              $btn_payment_confirmation = '<a class="dropdown-item btn-payment-confirmation text-info" href="javascript:void(0)" data-id="' . $data->id . '" data-nama="' . $data->name . '"><i class="fas fa-money-check-alt me-1"></i> Konfirmasi Pembayaran</a>';
             }
           }
 
@@ -113,6 +120,7 @@ class ReimbursementController extends Controller
                   ' . $btn_detail . '
                   ' . $btn_edit . '
                   ' . $btn_checking_application . '
+                  ' . $btn_payment_confirmation . '
                   ' . $btn_hapus . '
                 </div>
               </div>
@@ -139,7 +147,9 @@ class ReimbursementController extends Controller
         ->addColumn('status_detail', function ($data) {
           $html = '';
 
-          if ($data->status == 'approved') {
+          if ($data->status == 'done') {
+            $html = '<span class="badge rounded-pill bg-info">Selesai Dibayar</span>';
+          } elseif ($data->status == 'approved') {
             $html = '<div class="d-flex justify-content-start align-items-center user-name">
             <div class="d-flex flex-column">
             <span class="emp_name text-truncate">Disetujui Oleh: <strong>' . $data->userapproved->role->name . '</strong></span>
@@ -165,6 +175,8 @@ class ReimbursementController extends Controller
             $status_color = 'waiting';
           } elseif ($data->status == 'rejected') {
             $status_color = 'rejected';
+          } elseif ($data->status == 'done') {
+            $status_color = 'done';
           } else {
             $status_color = 'approved';
           }
@@ -439,6 +451,21 @@ class ReimbursementController extends Controller
       DB::rollback();
 
       return response()->json(['status' => false, 'pesan' => $e->getMessage()], 200);
+    }
+  }
+
+  /* Payment Confirmation */
+  public function paymentConfirmation(string $id)
+  {
+    $post = Reimbursement::find($id);
+    $post->status = "done";
+
+    $is_save = $post->save();
+
+    if ($is_save == true) {
+      return response()->json(['status' => true, 'pesan' => "Data pengajuan telah selesai dibayarkan!"], 200);
+    } else {
+      return response()->json(['status' => false, 'pesan' => "Data pengajuan gagal dibayarkan!"], 200);
     }
   }
 }

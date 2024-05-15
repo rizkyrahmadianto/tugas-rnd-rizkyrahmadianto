@@ -59,6 +59,8 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/reimbursement/checking/{id}', [ReimbursementController::class, 'checkingApplication'])->name('reimbursement.checking');
   Route::post('/reimbursement/store-checking/{id}', [ReimbursementController::class, 'storeCheckingApplication'])->name('reimbursement.store-checking');
 
+  Route::get('/reimbursement/payment-confirmation/{id}', [ReimbursementController::class, 'paymentConfirmation']);
+
   Route::get('/reimbursement/delete/{id}', [ReimbursementController::class, 'destroy']);
 
   Route::resource("reimbursement", ReimbursementController::class);
