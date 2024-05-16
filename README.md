@@ -79,3 +79,15 @@ Dengan demikian, aplikasi ini memberikan struktur peran yang jelas untuk memudah
     ```
 
 Now you can start using the Reimbursement application.
+
+
+Berikut adalah tabel akun yang bisa Anda tes:
+
+**User Accounts for Testing**
+
+| No. | NIP   | Nama         | Role        | Password |
+|-----|-------|--------------|-------------|----------|
+| 1.  | 0000  | Super Admin  | SUPERADMIN  | 000000   |
+| 2.  | 1234  | DONI         | DIRECTOR    | 123456   |
+| 3.  | 1235  | DONO         | FINANCE     | 123456   |
+| 4.  | 1236  | DONA         | STAFF       | 123456   |
