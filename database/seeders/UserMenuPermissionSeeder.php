@@ -196,7 +196,7 @@ class UserMenuPermissionSeeder extends Seeder
     UserMenuAuthorization::create([
       'role_id' => $role_finance->id,
       'menu_id' => $menu_parent_reimbursement->id,
-      'permission_given' => 'create,read,update,delete,list,approval,payment-confirmation',
+      'permission_given' => 'create,read,update,delete,list,payment-confirmation',
       'status' => true
     ]);
 

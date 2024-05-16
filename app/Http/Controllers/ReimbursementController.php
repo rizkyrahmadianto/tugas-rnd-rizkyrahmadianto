@@ -105,7 +105,9 @@ class ReimbursementController extends Controller
 
           if (isAccess('delete', $id_menu, auth()->user()->role_id)) {
             if ($data->status == 'waiting') {
-              $btn_hapus = '<hr class="dropdown-divider"><a class="dropdown-item btn-hapus text-danger" href="javascript:void(0)" data-id="' . $data->id . '" data-nama="' . $data->name . '"><i class="fas fa-trash-alt me-1"></i> Hapus</a>';
+              if (Auth::user()->id == $data->user_created) {
+                $btn_hapus = '<hr class="dropdown-divider"><a class="dropdown-item btn-hapus text-danger" href="javascript:void(0)" data-id="' . $data->id . '" data-nama="' . $data->name . '"><i class="fas fa-trash-alt me-1"></i> Hapus</a>';
+              }
             }
           }
 
