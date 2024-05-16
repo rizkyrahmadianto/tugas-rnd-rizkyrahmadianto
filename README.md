@@ -1,4 +1,17 @@
-**Getting Started with Reimbursement Application**
+### Description
+Aplikasi Reimbursement yang dibuat dengan Laravel 10 dan menggunakan template admin Sneat Dashboard Admin berbasis Bootstrap 5 serta PostgreSQL sebagai basis data, adalah sebuah platform sederhana yang memfasilitasi proses pengajuan dan pengelolaan reimbursement. Pengguna dapat mengakses aplikasi dengan NIP dan password masing-masing, dengan memegang peran yang berbeda-beda untuk memisahkan tanggung jawab mereka.
+
+1. **Superadmin**: Memiliki akses penuh terhadap seluruh fitur aplikasi, termasuk pengelolaan data dan proses approval/reject pengajuan reimbursement.
+
+2. **Direktur**: Bertanggung jawab atas approval/reject pengajuan. Direktur juga memiliki kemampuan untuk membuat, mengedit, dan menghapus data pengguna.
+
+3. **Finance**: Melakukan konfirmasi penyelesaian pembayaran.
+
+4. **Staff**: Membuat pengajuan reimbursement.
+
+Dengan demikian, aplikasi ini memberikan struktur peran yang jelas untuk memudahkan proses pengajuan dan pengelolaan reimbursement, sambil memastikan bahwa setiap pengguna memiliki akses sesuai dengan tanggung jawab mereka.
+
+### Getting Started with Reimbursement Application
 
 ### Clone Repository
 1. Clone the repository by running the following command in your terminal or command prompt:
