@@ -219,13 +219,14 @@ class ReimbursementController extends Controller
     }
   }
 
-  public function rules($request)
+  public function rules_store($request)
   {
     $rule = [
       'date_created' => 'required',
       'name' => 'required|string|max:200',
       'description' => 'required|string',
-      'file' => 'max:5000|mimes:png,jpeg,gif,pdf|sometimes|nullable',
+      // 'file' => 'max:5000|mimes:png,jpeg,gif,pdf|sometimes|nullable',
+      'file' => 'max:5000|mimes:png,jpeg,gif,pdf|required',
     ];
 
     $pesan = [
@@ -233,6 +234,7 @@ class ReimbursementController extends Controller
       'name.required' => 'Nama pengajuan wajib diisi!',
       'name.max' => 'Nama pengajuan wajib diisi dengan maksimal 200 karakter!',
       'description.required' => 'Deskripsi pengajuan wajib diisi!',
+      'file.required' => 'File pendukung tidak boleh kosong!',
       'file.max' => 'File pendukung tidak boleh lebih dari 5MB!',
       'file.mimes' => 'File pendukung format hanya .png, .jpeg, .gif, atau .pdf!',
     ];
@@ -245,7 +247,7 @@ class ReimbursementController extends Controller
    */
   public function store(Request $request)
   {
-    $validator = $this->rules($request->all());
+    $validator = $this->rules_store($request->all());
 
     // dd($request->all());
 
@@ -327,12 +329,34 @@ class ReimbursementController extends Controller
     }
   }
 
+  // validation untuk form update
+  public function rules_update($request)
+  {
+    $rule = [
+      'date_created' => 'required',
+      'name' => 'required|string|max:200',
+      'description' => 'required|string',
+      'file' => 'max:5000|mimes:png,jpeg,gif,pdf|sometimes|nullable',
+    ];
+
+    $pesan = [
+      'date_created.required' => 'Tanggal pengajuan wajib diisi!',
+      'name.required' => 'Nama pengajuan wajib diisi!',
+      'name.max' => 'Nama pengajuan wajib diisi dengan maksimal 200 karakter!',
+      'description.required' => 'Deskripsi pengajuan wajib diisi!',
+      'file.max' => 'File pendukung tidak boleh lebih dari 5MB!',
+      'file.mimes' => 'File pendukung format hanya .png, .jpeg, .gif, atau .pdf!',
+    ];
+
+    return Validator::make($request, $rule, $pesan);
+  }
+
   /**
    * Update the specified resource in storage.
    */
   public function update(Request $request, string $id)
   {
-    $validator = $this->rules($request->all());
+    $validator = $this->rules_update($request->all());
 
     if ($validator->fails()) {
       return response()->json(['status' => false, 'pesan' => $validator->errors()]);

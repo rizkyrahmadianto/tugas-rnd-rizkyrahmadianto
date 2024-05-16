@@ -66,7 +66,7 @@
 
               <div class="mb-3">
 
-                <label for="file" class="form-label">File Pendukung</label>
+                <label for="file" class="form-label">File Pendukung<span style="color: red">*</span></label>
                 <input class="form-control" type="file" id="file" name="file">
 
                 <h5 class="mt-2">Catatan:</h5>

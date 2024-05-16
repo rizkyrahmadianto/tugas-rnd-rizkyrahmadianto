@@ -13,6 +13,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -44,7 +45,11 @@ class UserController extends Controller
         });
       }
 
-      $datas = $datas->get();
+      $datas = $datas->whereNotIn('id', [Auth::user()->id])
+        ->whereHas('role',  function ($query) {
+          $query->whereNotIn('code', ['SA', 'CU']);
+        })
+        ->get();
 
       return DataTables::of($datas)
         ->filter(function ($instance) use ($request) {
@@ -341,11 +346,11 @@ class UserController extends Controller
 
     $item_user = $query_user->first();
 
-    if (Storage::disk('public')->exists($item_user->avatar)) {
+    if (File::exists($item_user->avatar)) {
       Storage::disk('public')->delete($item_user->avatar);
     }
 
-    $hapus = $query_user->delete();
+    $hapus = $query_user->forceDelete();
 
     if ($hapus == true) {
       return response()->json(['status' => true, 'pesan' => "Data pengguna berhasil dihapus!"], 200);

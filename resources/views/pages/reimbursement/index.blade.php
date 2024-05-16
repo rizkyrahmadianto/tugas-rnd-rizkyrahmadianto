@@ -286,7 +286,7 @@
           }
 
           if (data["status_color"] == "rejected") {
-            $(row).css("background-color", "#ff3e1d");
+            $(row).css("background-color", "#ffe0db");
             $(row).addClass("danger");
           }
 
